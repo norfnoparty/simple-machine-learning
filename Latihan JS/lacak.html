@@ -1,0 +1,40 @@
+   <!DOCTYPE html>
+   <html lang="id">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Contoh Mendapatkan Lokasi</title>
+   </head>
+   <body>
+       <h1>Mendapatkan Lokasi Anda (dengan Izin)</h1>
+       <p>Klik tombol di bawah untuk meminta lokasi Anda. Ini hanya berfungsi jika Anda memberikan izin.</p>
+       <button id="getLocation">Dapatkan Lokasi Saya</button>
+       <div id="locationResult"></div>
+
+       <script>
+           document.getElementById('getLocation').addEventListener('click', function() {
+               if (navigator.geolocation) {
+                   navigator.geolocation.getCurrentPosition(function(position) {
+                       const latitude = position.coords.latitude;
+                       const longitude = position.coords.longitude;
+                       document.getElementById('locationResult').innerHTML = `
+                           <h3>Hasil:</h3>
+                           <p>Latitude: ${latitude}</p>
+                           <p>Longitude: ${longitude}</p>
+                           <p><a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank">Lihat di Google Maps</a></p>
+                       `;
+                   }, function(error) {
+                       if (error.code === error.PERMISSION_DENIED) {
+                           document.getElementById('locationResult').innerHTML = 'Anda menolak izin untuk mengakses lokasi.';
+                       } else {
+                           document.getElementById('locationResult').innerHTML = 'Error: ' + error.message;
+                       }
+                   });
+               } else {
+                   document.getElementById('locationResult').innerHTML = 'Geolocation tidak didukung oleh browser Anda.';
+               }
+           });
+       </script>
+   </body>
+   </html>
+   
